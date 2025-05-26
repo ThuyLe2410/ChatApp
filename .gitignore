@@ -1,0 +1,14 @@
+client/node_modules
+client/index.html
+client/eslint.config.js
+client/package*
+client/tsconfig*
+client/vite*
+client/note.txt
+
+server/node_modules
+server/.env
+server/package*
+server/tsconfig*
+server/note.txt
+
