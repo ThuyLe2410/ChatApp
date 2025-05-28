@@ -1,16 +1,12 @@
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import Join from "./components/Join";
-import Chat from "./components/Chat";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
 import "./App.css";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<Join />} />
-      <Route path="/chat" element={<Chat />} />
-    </Routes>
-  );
+  const [id, setId] = useLocalStorage("id");
+  console.log("id", id);
+  return id ? <Dashboard id={id} /> : <Login onIdSubmit={setId} />;
 }
 
 export default App;

@@ -19,10 +19,12 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log(`user connected: ${socket.id}`);
+
+  // join chatroom
   socket.on("join", ({ name, room }, callback) => {
-    console.log("join", name, room);
+    console.log("join", socket.id, name, room);
     const { error, user } = addUser({
-      id: Number(socket.id),
+      id: socket.id,
       name: name,
       room: room,
     });
@@ -33,15 +35,29 @@ io.on("connection", (socket) => {
       user: "admin",
       text: `${user.name}, welcome to the room ${user.room}`,
     });
+
     socket.broadcast
       .to(user.room)
       .emit("message", { user: "admin", text: `${user.name}, has joined!` });
     socket.join(user.room);
     callback();
   });
+
+  // send Message
+  socket.on('sendMessage', (message, callback)=> {
+    console.log('onSMS', socket.id)
+    const user = getUser(socket.id);
+    console.log('user', user)
+    if (user) {
+        io.to(user.room).emit('message', {user: user.name, text: message})
+    }
+  })
+
+  // leave chatroom
   socket.on("leave", ({ name, room }) => {
     console.log(`user left ${name} ${room}`);
   });
+
 });
 
 app.use(router);

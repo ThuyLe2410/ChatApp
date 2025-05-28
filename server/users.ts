@@ -1,4 +1,4 @@
-type userProps = {id: number, name: string, room: string}
+type userProps = {id: string, name: string, room: string}
 const users:userProps[] = [];
 
 export const addUser = ({id,name, room}: userProps) => {
@@ -9,11 +9,11 @@ export const addUser = ({id,name, room}: userProps) => {
         return {error: 'Username is taken'}
     }
     const user = {id, name, room};
+    console.log('addUser', user)
     users.push(user);
     return {user}
 }
-
-export const removeUser = (id: number) => {
+export const removeUser = (id: string) => {
     const index = users.findIndex((user) => user.id === id);
     if (index !== -1) {
         console.log('remove User', users.splice(index, 1))
@@ -21,8 +21,11 @@ export const removeUser = (id: number) => {
     }
 }
 
-export const getUser = (id: number) => {
-    users.find((user)=> user.id === id)
+export const getUser = (id: string) => {
+    console.log('users', users)
+    const user = users.find((user)=> user.id === id);
+    console.log('getUser', user);
+    return user
 }
 
 export const getUserInRoom = (room: string) => {
