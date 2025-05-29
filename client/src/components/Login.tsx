@@ -16,7 +16,7 @@ export default function Login({ onIdSubmit }: { onIdSubmit: onIdSubmitType }) {
   function createNewId() {
     onIdSubmit(uuidV4())
   }
-  
+
   return (
     <div className="flex justify-center align-middle items-center h-96 bg-gray-600">
       <div className="min-w-96">
