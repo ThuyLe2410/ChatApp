@@ -19,7 +19,6 @@ export function ContactsProvider({ children }: { children: React.ReactNode }) {
   }
   return (
     <ContactsContext.Provider value={{ contacts, createContact }}>
-      {" "}
       {children}
     </ContactsContext.Provider>
   );

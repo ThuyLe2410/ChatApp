@@ -1,5 +1,5 @@
 
-import { useContacts } from "../contexts/ContactsContext";
+import { useContacts } from "../contexts/ContactsProvider";
 import type { ContactProps } from "../type";
 
 export default function Contacts() {

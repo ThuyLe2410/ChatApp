@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import type { ContactProps, createContactProps } from "../type";
-import { useContacts } from "../contexts/ContactsContext";
+import { useContacts } from "../contexts/ContactsProvider";
 
 export default function NewContactModal({
   closeModal,
