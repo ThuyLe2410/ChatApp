@@ -6,7 +6,9 @@ export type recipientType = {
 }
 export type messageProps = {
     sender: string,
-    text: string
+    text: string,
+    senderName: string,
+    fromMe:boolean
 }
 export type ConversationProps = {
   recipients: recipientType[];

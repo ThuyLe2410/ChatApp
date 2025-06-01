@@ -81,10 +81,10 @@ export function ConversationsProvider({
         })
         const name = (contact&& contact.name) || message.sender
         const fromMe = id === message.sender
-        return {...message,senderName:name, fromMe}
+        return {...message, senderName:name, fromMe}
       })
 
-      return { ...conversation, selected };
+      return { ...conversation, messages, selected };
     }
   );
 
