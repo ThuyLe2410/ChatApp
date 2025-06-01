@@ -18,7 +18,7 @@ export default function Sidebar({ id }: { id: string }) {
     setModalOpen(false);
   }
   return (
-    <div className="relative h-screen w-96 bg-white border-r-2 border-gray-200">
+    <div className="relative h-full w-96 bg-white border-r-2 border-gray-200">
       <div className="h-full flex flex-col relative">
         <div className="flex">
           <button
