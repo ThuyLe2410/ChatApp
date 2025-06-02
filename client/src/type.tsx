@@ -1,3 +1,5 @@
+import {Socket} from "socket.io-client"
+
 export type onIdSubmitType = (id: string) => void;
 
 export type recipientType = {
@@ -35,4 +37,8 @@ export type ConversationsContextType = {
     selectConversationIndex: (index: number) => void;
     createConversation: createConversationProps;
     sendMessage:sendMessageProps
+}
+
+export type SocketContextType = {
+    socket: Socket
 }

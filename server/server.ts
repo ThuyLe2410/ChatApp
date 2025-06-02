@@ -1,9 +1,7 @@
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
-import router from "./router";
 import cors from "cors";
-import { addUser, removeUser, getUser, getUserInRoom } from "./users";
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -18,49 +16,40 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log(`user connected: ${socket.id}`);
+  let id: string | undefined;
+  let name: string | undefined
+  const rawId = socket.handshake.query.id;
+  console.log("rawId", rawId);
+  if (typeof rawId === "string") {
+    id = rawId;
+  } else if (Array.isArray(rawId)) {
+    id = rawId[0];
+  }
+  if (id) {
+    socket.join(id);
+  } else {
+    socket.disconnect();
+  }
+  socket.on("send-message", ({ recipients, text }) => {
+    console.log('send message - recipients', recipients)
+    console.log('send message text', text)
+    console.log('send message id', id);
 
-  // join chatroom
-  socket.on("join", ({ name, room }, callback) => {
-    console.log("join", socket.id, name, room);
-    const { error, user } = addUser({
-      id: socket.id,
-      name: name,
-      room: room,
+
+    recipients.forEach((recipient: { id: string; name: string }) => {
+      const newRecipients = recipients.filter(
+        (r: { id: string; name: string }) => r.id !== recipient.id
+      );
+      newRecipients.push({ id: id, name: name });
+      console.log('newRecipients', newRecipients)
+      socket.broadcast.to(recipient.id).emit("receive-message", {
+        recipients: newRecipients,
+        sender: id,
+        text,
+      });
     });
-    if (error) return callback(error);
-    if (!user) return 
-
-    socket.emit("message", {
-      user: "admin",
-      text: `${user.name}, welcome to the room ${user.room}`,
-    });
-
-    socket.broadcast
-      .to(user.room)
-      .emit("message", { user: "admin", text: `${user.name}, has joined!` });
-    socket.join(user.room);
-    callback();
   });
-
-  // send Message
-  socket.on('sendMessage', (message, callback)=> {
-    console.log('onSMS', socket.id)
-    const user = getUser(socket.id);
-    console.log('user', user)
-    if (user) {
-        io.to(user.room).emit('message', {user: user.name, text: message})
-    }
-  })
-
-  // leave chatroom
-  socket.on("leave", ({ name, room }) => {
-    console.log(`user left ${name} ${room}`);
-  });
-
 });
-
-app.use(router);
 
 server.listen(PORT, () => {
   console.log(`Server has started on PORT ${PORT}`);
