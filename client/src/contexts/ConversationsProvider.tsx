@@ -5,6 +5,7 @@ import type {
   ContactProps,
   ConversationProps,
   ConversationsContextType,
+  receiveMessageProps,
   recipientType,
 } from "../type";
 import { useContacts } from "./ContactsProvider";
@@ -38,7 +39,6 @@ export function ConversationsProvider({
     });
   }
 
-  console.log('selectedConversationIndex', selectedConversationIndex)
 
   const addMessageToConversation = useCallback(
     ({
@@ -56,7 +56,6 @@ export function ConversationsProvider({
         const newConversations = prev.map((conversation) => {
           if (arrayEquality(conversation.recipients, recipients)) {
             madeChange = true;
-            console.log("conversation", conversation);
             return {
               ...conversation,
               messages: [...conversation.messages, newMessage],
@@ -73,15 +72,11 @@ export function ConversationsProvider({
     },[setConversations] 
   );
 
-  console.log('socket', socket)
-  console.log('addMessage', addMessageToConversation);
 
 
   useEffect(() => {
-    console.log('effect')
     if (!socket) return;
-    const handleReceiveMessage = (message: any) => {
-        console.log("Received message", message);
+    const handleReceiveMessage = (message: receiveMessageProps ) => {
         addMessageToConversation(message)
     }
     socket.on("receive-message", handleReceiveMessage);
@@ -101,7 +96,7 @@ export function ConversationsProvider({
         const contact = contacts.find((contact) => {
           return contact.id === message.sender;
         });
-        const name = (contact && contact.name) || message.sender;
+        const name = (contact && contact.name) || message.sender
         const fromMe = id === message.sender;
         return { ...message, senderName: name, fromMe };
       });
@@ -129,6 +124,6 @@ function arrayEquality(a, b) {
   a.sort();
   b.sort();
   return a.every((elm, index) => {
-    return elm === b[index];
+    return elm.id === b[index].id;
   });
 }

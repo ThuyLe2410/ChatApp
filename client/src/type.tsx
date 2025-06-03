@@ -1,44 +1,54 @@
-import {Socket} from "socket.io-client"
+import { Socket } from "socket.io-client";
 
 export type onIdSubmitType = (id: string) => void;
 
 export type recipientType = {
-    id: string,
-    name:string
-}
+  id: string;
+  name: string;
+};
+
 export type messageProps = {
-    sender: string,
-    text: string,
-    senderName: string,
-    fromMe:boolean
-}
+  sender: string;
+  text: string;
+  senderName: string;
+  fromMe: boolean;
+};
 export type ConversationProps = {
   recipients: recipientType[];
   messages: messageProps[];
-  selected: boolean
+  selected: boolean;
 };
 
 export type ContactProps = {
   id: string;
   name: string;
 };
-export type sendMessageProps = (recipients: recipientType[], sender: string) => void
+export type sendMessageProps = (
+  recipients: recipientType[],
+  sender: string
+) => void;
 export type createContactProps = (ContactProps: ContactProps) => void;
-export type createConversationProps = (recipients: recipientType[]) => void
+export type createConversationProps = (recipients: recipientType[]) => void;
 
 export type ContactsContextType = {
   contacts: ContactProps[];
-  createContact: createContactProps
+  createContact: createContactProps;
 };
 
 export type ConversationsContextType = {
-    conversations: ConversationProps[];
-    selectedConversation: ConversationProps,
-    selectConversationIndex: (index: number) => void;
-    createConversation: createConversationProps;
-    sendMessage:sendMessageProps
-}
+  conversations: ConversationProps[];
+  selectedConversation: ConversationProps;
+  selectConversationIndex: (index: number) => void;
+  createConversation: createConversationProps;
+  sendMessage: sendMessageProps;
+};
 
 export type SocketContextType = {
-    socket: Socket
-}
+  socket: Socket;
+};
+
+export type receiveMessageProps = {
+  recipients: recipientType[];
+  text: string;
+  sender: string;
+};

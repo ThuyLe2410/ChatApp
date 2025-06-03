@@ -31,11 +31,6 @@ io.on("connection", (socket) => {
     socket.disconnect();
   }
   socket.on("send-message", ({ recipients, text }) => {
-    console.log('send message - recipients', recipients)
-    console.log('send message text', text)
-    console.log('send message id', id);
-
-
     recipients.forEach((recipient: { id: string; name: string }) => {
       const newRecipients = recipients.filter(
         (r: { id: string; name: string }) => r.id !== recipient.id
